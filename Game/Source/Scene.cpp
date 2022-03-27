@@ -33,7 +33,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
-	app->map->Load("iso_walk.tmx");
+	app->map->Load("maptest.tmx");
 	
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
