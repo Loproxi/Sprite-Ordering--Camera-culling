@@ -15,11 +15,9 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External\PugiXml</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\GuiButton.cpp" />
-    <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\RenderObjectsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -54,12 +52,9 @@
     <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp">
       <Filter>External\PugiXml</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Timer.h" />
-    <ClInclude Include="Source\GuiButton.h" />
-    <ClInclude Include="Source\GuiControl.h" />
-    <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\RenderObjectsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

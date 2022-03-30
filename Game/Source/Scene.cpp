@@ -5,8 +5,8 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
-#include "Map.h"
-#include "GuiManager.h"
+
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -33,14 +33,16 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
-	app->map->Load("maptest.tmx");
+	//app->map->Load("maptest.tmx");
+
+	backgroundmap = app->tex->Load("Assets/textures/maptest.png");
 	
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 	// L14: TODO 2: Declare a GUI Button and create it using the GuiManager
-	btn1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Test1", { (app->win->GetWidth() / 2) - 300, app->win->GetWidth() / 10, 160, 40 }, this);
-	btn2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Test2", { (app->win->GetWidth() / 2) + 300, app->win->GetWidth() / 10, 160, 40 }, this);
+	/*btn1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Test1", { (app->win->GetWidth() / 2) - 300, app->win->GetWidth() / 10, 160, 40 }, this);
+	btn2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Test2", { (app->win->GetWidth() / 2) + 300, app->win->GetWidth() / 10, 160, 40 }, this);*/
 
 	return true;
 }
@@ -76,10 +78,10 @@ bool Scene::Update(float dt)
 		app->render->camera.x += speed;
 
 	// Draw map
-	app->map->Draw();
+	//app->map->Draw();
 
 	//Draw GUI
-	app->guiManager->Draw();
+	/*app->guiManager->Draw();*/
 
 	return true;
 }
@@ -92,36 +94,38 @@ bool Scene::PostUpdate()
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
+	app->render->DrawTexture(backgroundmap, 0, 0);
+
 	return ret;
 }
 
 
-bool Scene::OnGuiMouseClickEvent(GuiControl* control)
-{
-
-	switch (control->type)
-	{
-	case GuiControlType::BUTTON:
-	{
-		//Checks the GUI element ID
-		if (control->id == 1) 
-		{
-			LOG("Click on button 1");
-		}
-
-		if (control->id == 2)
-		{
-			LOG("Click on button 2");
-		}
-		
-	}
-	//Other cases here
-
-	default: break;
-	}
-
-	return true;
-}
+//bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+//{
+//
+//	switch (control->type)
+//	{
+//	case GuiControlType::BUTTON:
+//	{
+//		//Checks the GUI element ID
+//		if (control->id == 1) 
+//		{
+//			LOG("Click on button 1");
+//		}
+//
+//		if (control->id == 2)
+//		{
+//			LOG("Click on button 2");
+//		}
+//		
+//	}
+//	//Other cases here
+//
+//	default: break;
+//	}
+//
+//	return true;
+//}
 
 // Called before quitting
 bool Scene::CleanUp()

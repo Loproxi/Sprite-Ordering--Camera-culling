@@ -7,6 +7,17 @@
 
 #include "SDL/include/SDL.h"
 
+struct renderObject
+{
+	SDL_Texture* texture;
+
+	SDL_Rect* section;
+
+	SDL_Rect renderRect;
+
+	SDL_RendererFlip flip;
+};
+
 class Render : public Module
 {
 public:
@@ -37,6 +48,8 @@ public:
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
 
+
+
 	// Drawing
 	bool DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX) const;
 	bool DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool useCamera = true) const;
@@ -49,7 +62,7 @@ public:
 public:
 
 	SDL_Renderer* renderer;
-	SDL_Rect camera;
+	SDL_Rect camera = { 0, 0, 520, 520 };;
 	SDL_Rect viewport;
 	SDL_Color background;
 };
