@@ -61,4 +61,6 @@ void RenderObjectsManager::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL
 	{
 		renderobject.flip = SDL_FLIP_HORIZONTAL;
 	}
+
+	renderObjects.push_back(renderobject);
 }
