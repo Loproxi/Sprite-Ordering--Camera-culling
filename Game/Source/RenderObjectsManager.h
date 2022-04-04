@@ -20,11 +20,13 @@ class RenderObjectsManager
 	bool Update(float dt);
 	bool PostUpdate();
 
+	void SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& listofobjectstosort);
+
 	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, bool isFlipH = false, float scale = 1.0f, float speed = 3.0f);
 
 public:
 
 	vector<renderObject> renderObjects;
-	
+	vector< vector<renderObject>> layers;
 };
 

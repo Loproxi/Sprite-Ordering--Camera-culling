@@ -16,6 +16,8 @@ bool RenderObjectsManager::Start()
 
 bool RenderObjectsManager::PreUpdate()
 {
+
+
 	return true;
 }
 
@@ -27,6 +29,10 @@ bool RenderObjectsManager::Update(float dt)
 bool RenderObjectsManager::PostUpdate()
 {
 	return true;
+}
+
+void RenderObjectsManager::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& listofobjectstosort)
+{
 }
 
 void RenderObjectsManager::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, bool isFlipH, float scale, float speed)

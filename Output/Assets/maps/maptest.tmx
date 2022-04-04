@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="35" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="35" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="tileset1" tilewidth="16" tileheight="16" tilecount="2560" columns="64">
   <image source="RF_Catacombs_v1.0/mainlevbuild.png" width="1024" height="640"/>
  </tileset>
- <layer id="1" name="suelo" width="35" height="35">
+ <layer id="1" name="suelo" width="35" height="35" visible="0">
   <properties>
    <property name="Draw" type="int" value="1"/>
   </properties>
