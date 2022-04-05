@@ -2,7 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
-
+#include "RenderObjectsManager.h"
 
 //class GuiControl;
 
@@ -43,6 +43,8 @@ private:
 	SDL_Texture* img;
 
 	SDL_Texture* backgroundmap;
+
+	RenderObjectsManager manager;
 
 	// L14: TODO 2: Declare a GUI Button and create it using the GuiManager
 

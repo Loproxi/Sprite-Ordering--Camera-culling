@@ -36,6 +36,8 @@ bool Scene::Start()
 	//app->map->Load("maptest.tmx");
 
 	backgroundmap = app->tex->Load("Assets/textures/maptest.png");
+
+	manager.SortingRenderObjectsWithOrdenInLayer();
 	
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -83,6 +85,8 @@ bool Scene::Update(float dt)
 	//Draw GUI
 	/*app->guiManager->Draw();*/
 
+	
+
 	return true;
 }
 
@@ -95,6 +99,8 @@ bool Scene::PostUpdate()
 		ret = false;
 
 	app->render->DrawTexture(backgroundmap, 0, 0);
+
+	
 
 	return ret;
 }

@@ -31,19 +31,41 @@ bool RenderObjectsManager::PostUpdate()
 	return true;
 }
 
-void RenderObjectsManager::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& listofobjectstosort)
+void RenderObjectsManager::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorofobjectstosort)
 {
+	
+	int small;
+	int length = vectorofobjectstosort.size();
+
+	for (int i = 0; i < length - 1; i++)
+	{
+		small = i;
+		for (int j = i; j < length; j++)
+		{
+			if (vectorofobjectstosort[j].Ordeninlayer < vectorofobjectstosort[small].Ordeninlayer)
+			{
+				//2 3
+				small = j;
+			}
+		}
+		swap(vectorofobjectstosort[i], vectorofobjectstosort[small]);
+
+	}
+	
 }
 
-void RenderObjectsManager::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, bool isFlipH, float scale, float speed)
+void RenderObjectsManager::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float ordeninlayer, bool isFlipH, float scale, float speed)
 {
 	renderObject renderobject;
 
 	renderobject.texture = texture;
 	renderobject.section = section;
-
+	renderobject.Ordeninlayer = ordeninlayer;
+	renderobject.speed = speed;
 	renderobject.renderRect.x = (int)(app->render->camera.x * speed) + pos.x * scale;
 	renderobject.renderRect.y = (int)(app->render->camera.y * speed) + pos.y * scale;
+
+	if (layer == 3) renderobject.speed = 0;
 
 	if (section != nullptr)
 	{
@@ -68,5 +90,5 @@ void RenderObjectsManager::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL
 		renderobject.flip = SDL_FLIP_HORIZONTAL;
 	}
 
-	renderObjects.push_back(renderobject);
+	layers[layer].push_back(renderobject);
 }

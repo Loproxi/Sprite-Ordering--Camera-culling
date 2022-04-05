@@ -16,6 +16,13 @@ struct renderObject
 	SDL_Rect renderRect;
 
 	SDL_RendererFlip flip;
+
+	int layer = 0;
+
+	float Ordeninlayer = 1.0f;
+
+	float speed = 1.0f;
+
 };
 
 class Render : public Module
