@@ -20,7 +20,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	void SortingRenderObjectsWithOrdenInLayer(/*vector<renderObject>& vectorofobjectstosort*/);
+	void SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorofobjectstosort);
 
 	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section,int layer,float ordeninlayer,bool isFlipH = false, float scale = 1.0f, float speed = 1.0f);
 
