@@ -28,6 +28,14 @@ bool RenderObjectsManager::Update(float dt)
 
 bool RenderObjectsManager::PostUpdate()
 {
+
+	//Hacer sorting
+
+	// for each 
+	//if is in camera
+	//and draw function
+
+	//Clear vector
 	return true;
 }
 
@@ -40,11 +48,10 @@ void RenderObjectsManager::SortingRenderObjectsWithOrdenInLayer(vector<renderObj
 	for (int i = 0; i < length - 1; i++)
 	{
 		small = i;
-		for (int j = i; j < length; j++)
+		for (int j = i + 1 ; j < length; j++)
 		{
 			if (vectorofobjectstosort[j].Ordeninlayer < vectorofobjectstosort[small].Ordeninlayer)
 			{
-				//2 3
 				small = j;
 			}
 		}
