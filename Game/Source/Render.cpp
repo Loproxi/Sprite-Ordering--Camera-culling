@@ -1,7 +1,6 @@
 #include "App.h"
 #include "Window.h"
 #include "Render.h"
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -48,6 +47,7 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.x = 0;
 		camera.y = 0;
 	}
+	layers.resize(3);
 
 	return ret;
 }
@@ -56,8 +56,10 @@ bool Render::Awake(pugi::xml_node& config)
 bool Render::Start()
 {
 	LOG("render start");
+	
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
 	return true;
 }
 
@@ -76,6 +78,15 @@ bool Render::Update(float dt)
 bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
+
+	for each (auto renderObj in layers[1])
+	{
+		if (IsinCamera(&renderObj))
+		{
+			printf("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		}
+	}
+
 	SDL_RenderPresent(renderer);
 	return true;
 }
@@ -125,126 +136,197 @@ void Render::ResetViewPort()
 	SDL_RenderSetViewport(renderer, &viewport);
 }
 
-// Blit to screen
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
+//// Blit to screen
+//bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
+//{
+//	bool ret = true;
+//	uint scale = app->win->GetScale();
+//
+//	SDL_Rect rect;
+//	rect.x = (int)(camera.x * speed) + x * scale;
+//	rect.y = (int)(camera.y * speed) + y * scale;
+//
+//	if(section != NULL)
+//	{
+//		rect.w = section->w;
+//		rect.h = section->h;
+//	}
+//	else
+//	{
+//		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+//	}
+//
+//	rect.w *= scale;
+//	rect.h *= scale;
+//
+//	SDL_Point* p = NULL;
+//	SDL_Point pivot;
+//
+//	if(pivotX != INT_MAX && pivotY != INT_MAX)
+//	{
+//		pivot.x = pivotX;
+//		pivot.y = pivotY;
+//		p = &pivot;
+//	}
+//
+//	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+//	{
+//		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+//		ret = false;
+//	}
+//
+//	return ret;
+//}
+//
+//bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
+//{
+//	bool ret = true;
+//	uint scale = app->win->GetScale();
+//
+//	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+//	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+//
+//	SDL_Rect rec(rect);
+//	if(use_camera)
+//	{
+//		rec.x = (int)(camera.x + rect.x * scale);
+//		rec.y = (int)(camera.y + rect.y * scale);
+//		rec.w *= scale;
+//		rec.h *= scale;
+//	}
+//
+//	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
+//
+//	if(result != 0)
+//	{
+//		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+//		ret = false;
+//	}
+//
+//	return ret;
+//}
+//
+//bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+//{
+//	bool ret = true;
+//	uint scale = app->win->GetScale();
+//
+//	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+//	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+//
+//	int result = -1;
+//
+//	if(use_camera)
+//		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
+//	else
+//		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
+//
+//	if(result != 0)
+//	{
+//		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+//		ret = false;
+//	}
+//
+//	return ret;
+//}
+//
+//bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+//{
+//	bool ret = true;
+//	uint scale = app->win->GetScale();
+//
+//	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+//	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+//
+//	int result = -1;
+//	SDL_Point points[360];
+//
+//	float factor = (float)M_PI / 180.0f;
+//
+//	for(uint i = 0; i < 360; ++i)
+//	{
+//		points[i].x = (int)(x + radius * cos(i * factor));
+//		points[i].y = (int)(y + radius * sin(i * factor));
+//	}
+//
+//	result = SDL_RenderDrawPoints(renderer, points, 360);
+//
+//	if(result != 0)
+//	{
+//		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+//		ret = false;
+//	}
+//
+//	return ret;
+//}
+
+void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float ordeninlayer, bool isFlipH, bool tosort, float scale, float speed)
 {
-	bool ret = true;
-	uint scale = app->win->GetScale();
+	renderObject renderobject;
 
-	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	renderobject.texture = texture;
+	renderobject.section = section;
+	renderobject.Ordeninlayer = ordeninlayer;
+	renderobject.speed = speed;
+	renderobject.toSort = tosort;
+	renderobject.renderRect.x = (int)(app->render->camera.x * speed) + pos.x * scale;
+	renderobject.renderRect.y = (int)(app->render->camera.y * speed) + pos.y * scale;
 
-	if(section != NULL)
+	if (layer == 3) renderobject.speed = 0;
+
+	if (section != nullptr)
 	{
-		rect.w = section->w;
-		rect.h = section->h;
+		renderobject.renderRect.w = section->w;
+		renderobject.renderRect.h = section->h;
 	}
 	else
 	{
-		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+		// Get the texture size 
+		SDL_QueryTexture(texture, nullptr, nullptr, &renderobject.renderRect.w, &renderobject.renderRect.h);
 	}
 
-	rect.w *= scale;
-	rect.h *= scale;
+	renderobject.renderRect.w *= scale;
+	renderobject.renderRect.h *= scale;
 
-	SDL_Point* p = NULL;
-	SDL_Point pivot;
-
-	if(pivotX != INT_MAX && pivotY != INT_MAX)
+	if (isFlipH == false)
 	{
-		pivot.x = pivotX;
-		pivot.y = pivotY;
-		p = &pivot;
+		renderobject.flip = SDL_FLIP_VERTICAL;
 	}
-
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
-	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
-}
-
-bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
-{
-	bool ret = true;
-	uint scale = app->win->GetScale();
-
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
-	SDL_Rect rec(rect);
-	if(use_camera)
-	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
-		rec.w *= scale;
-		rec.h *= scale;
-	}
-
-	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
-
-	if(result != 0)
-	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
-}
-
-bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
-{
-	bool ret = true;
-	uint scale = app->win->GetScale();
-
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
-	int result = -1;
-
-	if(use_camera)
-		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
-		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
-
-	if(result != 0)
 	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
-		ret = false;
+		renderobject.flip = SDL_FLIP_HORIZONTAL;
 	}
 
-	return ret;
+	layers[layer].push_back(renderobject);
 }
 
-bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+bool Render::IsinCamera(const renderObject* renderObj)
 {
-	bool ret = true;
-	uint scale = app->win->GetScale();
 
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(renderer, r, g, b, a);
+	SDL_Rect* camera = &app->render->camera;
+	SDL_Rect r = { renderObj->renderRect.x ,renderObj->renderRect.y,renderObj->renderRect.w ,renderObj->renderRect.h };
 
-	int result = -1;
-	SDL_Point points[360];
+	return SDL_HasIntersection(camera, &r);
+}
 
-	float factor = (float)M_PI / 180.0f;
+void Render::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorofobjectstosort)
+{
 
-	for(uint i = 0; i < 360; ++i)
+	int small;
+	int length = vectorofobjectstosort.size();
+
+	for (int i = 0; i < length - 1; i++)
 	{
-		points[i].x = (int)(x + radius * cos(i * factor));
-		points[i].y = (int)(y + radius * sin(i * factor));
+		small = i;
+		for (int j = i + 1; j < length; j++)
+		{
+			if (vectorofobjectstosort[j].Ordeninlayer < vectorofobjectstosort[small].Ordeninlayer)
+			{
+				small = j;
+			}
+		}
+		swap(vectorofobjectstosort[i], vectorofobjectstosort[small]);
+
 	}
 
-	result = SDL_RenderDrawPoints(renderer, points, 360);
-
-	if(result != 0)
-	{
-		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
-		ret = false;
-	}
-
-	return ret;
 }

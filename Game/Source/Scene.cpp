@@ -37,7 +37,7 @@ bool Scene::Start()
 
 	backgroundmap = app->tex->Load("Assets/textures/maptest.png");
 
-	manager.SortingRenderObjectsWithOrdenInLayer();
+	
 	
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -98,9 +98,8 @@ bool Scene::PostUpdate()
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	app->render->DrawTexture(backgroundmap, 0, 0);
-
-	
+	/*app->render->DrawTexture(backgroundmap, 0, 0);*/
+	app->render->AddrenderObject(backgroundmap, { 0,0 }, nullptr, 1, 1.0f);
 
 	return ret;
 }
