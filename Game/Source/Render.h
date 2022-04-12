@@ -15,11 +15,13 @@ struct renderObject
 {
 	SDL_Texture* texture;
 
-	SDL_Rect* section;
+	SDL_Rect section = { 0,0,0,0 };
 
 	SDL_Rect renderRect;
 
 	SDL_RendererFlip flip;
+
+	double angle = 0.0f;
 
 	int layer = 0;
 
@@ -77,9 +79,11 @@ public:
 
 	bool IsinCamera(const renderObject* renderObj);
 
-	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float ordeninlayer, bool isFlipH = false, bool tosort = false, float scale = 1.0f, float speed = 1.0f);
+	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH = false, bool tosort = false, float scale = 1.0f, float speed = 1.0f);
 
 	//Draw Function
+	void Draw();
+
 public:
 
 	SDL_Renderer* renderer;

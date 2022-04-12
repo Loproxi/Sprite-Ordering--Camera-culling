@@ -99,7 +99,7 @@ bool Scene::PostUpdate()
 		ret = false;
 
 	/*app->render->DrawTexture(backgroundmap, 0, 0);*/
-	app->render->AddrenderObject(backgroundmap, { 0,0 }, nullptr, 1, 1.0f);
+	app->render->AddrenderObject(backgroundmap, { 580,580 }, { 0,0,0,0 }, 1, 1.0f,0.0f);
 
 	return ret;
 }

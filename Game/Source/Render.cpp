@@ -5,6 +5,7 @@
 #include "Log.h"
 
 #define VSYNC true
+#define MAX_LAYERS 3
 
 Render::Render() : Module()
 {
@@ -47,7 +48,7 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.x = 0;
 		camera.y = 0;
 	}
-	layers.resize(3);
+	layers.resize(MAX_LAYERS);
 
 	return ret;
 }
@@ -79,15 +80,20 @@ bool Render::PostUpdate()
 {
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 
-	for each (auto renderObj in layers[1])
-	{
-		if (IsinCamera(&renderObj))
-		{
-			printf("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-		}
-	}
+	//Sort
+
+	Draw();
+
 
 	SDL_RenderPresent(renderer);
+
+	//Clear layers
+
+	for (int i = 0; i < MAX_LAYERS; i++)
+	{
+		layers[i].clear();
+	}
+
 	return true;
 }
 
@@ -260,7 +266,7 @@ void Render::ResetViewPort()
 //	return ret;
 //}
 
-void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float ordeninlayer, bool isFlipH, bool tosort, float scale, float speed)
+void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH, bool tosort, float scale, float speed)
 {
 	renderObject renderobject;
 
@@ -269,15 +275,16 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section
 	renderobject.Ordeninlayer = ordeninlayer;
 	renderobject.speed = speed;
 	renderobject.toSort = tosort;
+	renderobject.angle = angle;
 	renderobject.renderRect.x = (int)(app->render->camera.x * speed) + pos.x * scale;
 	renderobject.renderRect.y = (int)(app->render->camera.y * speed) + pos.y * scale;
 
 	if (layer == 3) renderobject.speed = 0;
 
-	if (section != nullptr)
+	if (section.w != 0 || section.h != 0)
 	{
-		renderobject.renderRect.w = section->w;
-		renderobject.renderRect.h = section->h;
+		renderobject.renderRect.w = section.w;
+		renderobject.renderRect.h = section.h;
 	}
 	else
 	{
@@ -298,6 +305,73 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect* section
 	}
 
 	layers[layer].push_back(renderobject);
+}
+
+void Render::Draw()
+{
+	for each (auto renderObj in layers[0])
+	{
+		if (IsinCamera(&renderObj))
+		{
+			if (renderObj.section.w != 0 || renderObj.section.h != 0)
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+			}
+			else
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+			}
+		}
+	}
+
+	for each (auto renderObj in layers[1])
+	{
+		if (IsinCamera(&renderObj))
+		{
+			if (renderObj.section.w == 0 || renderObj.section.h == 0)
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+			}
+			else
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+			}
+		}
+	}
+
+	for each (auto renderObj in layers[2])
+	{
+		if (IsinCamera(&renderObj))
+		{
+			if (renderObj.section.w != 0 || renderObj.section.h != 0)
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+			}
+			else
+			{
+				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+				{
+					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+				}
+			}
+		}
+	}
+
 }
 
 bool Render::IsinCamera(const renderObject* renderObj)
