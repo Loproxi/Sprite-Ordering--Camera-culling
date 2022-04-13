@@ -2,7 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
-
+#include "Player.h"
 
 //class GuiControl;
 
@@ -43,6 +43,8 @@ private:
 	SDL_Texture* img;
 
 	SDL_Texture* backgroundmap;
+
+	Player* froggy;
 };
 
 #endif // __SCENE_H__

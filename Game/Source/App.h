@@ -94,6 +94,10 @@ public:
 	Map* map;
 	GuiManager* guiManager;
 
+
+	Timer globalTime;
+
+	int FPS = 60;
 private:
 
 	int argc;
@@ -115,6 +119,9 @@ private:
 	// L07: DONE 4: Calculate some timing measures
 	// required variables are provided:
 	PerfTimer ptimer;
+	PerfTimer* frameDuration;
+
+	uint32 maxFrameRate = 0;
 
 	Timer startupTime;
 	Timer frameTime;

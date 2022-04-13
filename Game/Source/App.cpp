@@ -41,6 +41,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(render);
+
+	frameDuration = new PerfTimer();
+	
 }
 
 // Destructor
@@ -111,8 +114,6 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	startupTime.Start();
-	lastSecFrameTime.Start();
 
 	bool ret = true;
 	ListItem<Module*>* item;
@@ -131,21 +132,27 @@ bool App::Start()
 bool App::Update()
 {
 	bool ret = true;
-	PrepareUpdate();
+	globalTime.Update();
 
-	if (input->GetWindowEvent(WE_QUIT) == true)
-		ret = false;
+	if (globalTime.getDeltaTime() >= 1.0f/FPS)
+	{
+		PrepareUpdate();
 
-	if (ret == true)
-		ret = PreUpdate();
+		if (input->GetWindowEvent(WE_QUIT) == true)
+			ret = false;
 
-	if (ret == true)
-		ret = DoUpdate();
+		if (ret == true)
+			ret = PreUpdate();
 
-	if (ret == true)
-		ret = PostUpdate();
+		if (ret == true)
+			ret = DoUpdate();
 
-	FinishUpdate();
+		if (ret == true)
+			ret = PostUpdate();
+
+		FinishUpdate();
+		globalTime.Reset();
+	}
 	return ret;
 }
 
@@ -170,7 +177,8 @@ void App::PrepareUpdate()
 	lastSecFrameCount++;
 
 	// L08: TODO 4: Calculate the dt: differential time since last frame
-
+	dt = frameDuration->ReadMs();
+	frameDuration->Start();
 }
 
 // ---------------------------------------------
@@ -180,31 +188,32 @@ void App::FinishUpdate()
 	if (loadGameRequested == true) LoadGame();
 	if (saveGameRequested == true) SaveGame();
 
-	// L07: DONE 4: Now calculate:
-	// Amount of frames since startup
-	// Amount of time since game start (use a low resolution timer)
-	// Amount of ms took the last update
-	// Amount of frames during the last second
-	// Average FPS for the whole game life
+	float secondsSinceStartup = startupTime.getExecuteTime(true);
 
-	float secondsSinceStartup = startupTime.ReadSec();
-
-	if (lastSecFrameTime.Read() > 1000) {
-		lastSecFrameTime.Start();
+	lastSecFrameTime.Update();
+	if (lastSecFrameTime.getDeltaTime() > 1) {
+		lastSecFrameTime.Reset();
 		framesPerSecond = lastSecFrameCount;
 		lastSecFrameCount = 0;
 		averageFps = (averageFps + framesPerSecond) / 2;
 	}
 
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+	sprintf_s(title, 256, "Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %.0fs Frame Count: %I64u",
 		averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
 
-	// L08: TODO 2: Use SDL_Delay to make sure you get your capped framerate
+	// L08: DONE 2: Use SDL_Delay to make sure you get your capped framerate
+	float delay = float(maxFrameRate) - frameDuration->ReadMs();
+	//LOG("F: %f Delay:%f", frameDuration->ReadMs(), delay);
 
-	// L08: TODO 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+	// L08: DONE 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+	PerfTimer* delayt = new PerfTimer();
+	delayt->Start();
+	if (maxFrameRate > 0 && delay > 0) SDL_Delay(delay);
+	//LOG("Expected %f milliseconds and the real delay is % f", delay, delayt->ReadMs());
 
 	app->win->SetTitle(title);
+	delete delayt;
 }
 
 // Call modules before each loop iteration

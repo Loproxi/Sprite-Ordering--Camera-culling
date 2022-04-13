@@ -37,7 +37,9 @@ bool Scene::Start()
 
 	backgroundmap = app->tex->Load("Assets/textures/maptest.png");
 
-	
+	froggy = new Player();
+
+	froggy->Start();
 	
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -52,6 +54,7 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+	froggy->PreUpdate();
 	return true;
 }
 
@@ -79,6 +82,7 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += speed;
 
+	froggy->Update();
 	// Draw map
 	//app->map->Draw();
 
@@ -98,8 +102,10 @@ bool Scene::PostUpdate()
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
+	froggy->PostUpdate();
+
 	/*app->render->DrawTexture(backgroundmap, 0, 0);*/
-	app->render->AddrenderObject(backgroundmap, { 580,580 }, { 0,0,0,0 }, 1, 1.0f,0.0f);
+	app->render->AddrenderObject(backgroundmap, { 0,0 }, { 0,0,0,0 }, 1, 1.0f,0.0f);
 
 	return ret;
 }
@@ -136,6 +142,10 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	froggy->CleanUp();
+
+
 
 	return true;
 }

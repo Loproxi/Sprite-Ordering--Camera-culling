@@ -297,7 +297,7 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 
 	if (isFlipH == false)
 	{
-		renderobject.flip = SDL_FLIP_VERTICAL;
+		renderobject.flip = SDL_FLIP_NONE;
 	}
 	else
 	{
@@ -313,7 +313,7 @@ void Render::Draw()
 	{
 		if (IsinCamera(&renderObj))
 		{
-			if (renderObj.section.w != 0 || renderObj.section.h != 0)
+			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
 				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
 				{
@@ -355,7 +355,7 @@ void Render::Draw()
 	{
 		if (IsinCamera(&renderObj))
 		{
-			if (renderObj.section.w != 0 || renderObj.section.h != 0)
+			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
 				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
 				{
@@ -377,10 +377,10 @@ void Render::Draw()
 bool Render::IsinCamera(const renderObject* renderObj)
 {
 
-	SDL_Rect* camera = &app->render->camera;
+	SDL_Rect camera = {(-app->render->camera.x + renderObj->renderRect.x),(-app->render->camera.y + renderObj->renderRect.y),app->render->camera.w,app->render->camera.h };
 	SDL_Rect r = { renderObj->renderRect.x ,renderObj->renderRect.y,renderObj->renderRect.w ,renderObj->renderRect.h };
 
-	return SDL_HasIntersection(camera, &r);
+	return SDL_HasIntersection(&camera, &r);
 }
 
 void Render::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorofobjectstosort)
