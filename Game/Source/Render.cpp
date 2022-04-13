@@ -311,7 +311,7 @@ void Render::Draw()
 {
 	for each (auto renderObj in layers[0])
 	{
-		if (IsinCamera(&renderObj))
+		if (IsinCamera(renderObj))
 		{
 			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
@@ -332,7 +332,7 @@ void Render::Draw()
 
 	for each (auto renderObj in layers[1])
 	{
-		if (IsinCamera(&renderObj))
+		if (IsinCamera(renderObj))
 		{
 			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
@@ -353,7 +353,7 @@ void Render::Draw()
 
 	for each (auto renderObj in layers[2])
 	{
-		if (IsinCamera(&renderObj))
+		if (IsinCamera(renderObj))
 		{
 			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
@@ -374,11 +374,11 @@ void Render::Draw()
 
 }
 
-bool Render::IsinCamera(const renderObject* renderObj)
+bool Render::IsinCamera(const renderObject& renderObj)
 {
 
-	SDL_Rect camera = {(-app->render->camera.x + renderObj->renderRect.x),(-app->render->camera.y + renderObj->renderRect.y),app->render->camera.w,app->render->camera.h };
-	SDL_Rect r = { renderObj->renderRect.x ,renderObj->renderRect.y,renderObj->renderRect.w ,renderObj->renderRect.h };
+	SDL_Rect camera = {-app->render->camera.x,-app->render->camera.y,app->render->camera.w,app->render->camera.h };
+	SDL_Rect r = { renderObj.renderRect.x ,renderObj.renderRect.y,renderObj.renderRect.w ,renderObj.renderRect.h };
 
 	return SDL_HasIntersection(&camera, &r);
 }
