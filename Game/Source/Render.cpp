@@ -266,6 +266,17 @@ void Render::ResetViewPort()
 //	return ret;
 //}
 
+iPoint Render::ScreenToWorld(int x, int y) const
+{
+	iPoint ret;
+	int scale = app->win->GetScale();
+
+	ret.x = (x - app->render->camera.x / scale);
+	ret.y = (y - app->render->camera.y / scale);
+
+	return ret;
+}
+
 void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH, bool tosort, float scale, float speed)
 {
 	renderObject renderobject;
@@ -276,12 +287,12 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	renderobject.speed = speed;
 	renderobject.toSort = tosort;
 	renderobject.angle = angle;
-	renderobject.renderRect.x = (int)(app->render->camera.x * speed) + pos.x * scale;
-	renderobject.renderRect.y = (int)(app->render->camera.y * speed) + pos.y * scale;
+	renderobject.renderRect.x = (int)(-app->render->camera.x * speed) + pos.x * scale;
+	renderobject.renderRect.y = (int)(-app->render->camera.y * speed) + pos.y * scale;
 
 	if (layer == 3) renderobject.speed = 0;
 
-	if (section.w != 0 || section.h != 0)
+	if (section.w != 0 && section.h != 0)
 	{
 		renderobject.renderRect.w = section.w;
 		renderobject.renderRect.h = section.h;
@@ -376,11 +387,12 @@ void Render::Draw()
 
 bool Render::IsinCamera(const renderObject& renderObj)
 {
+	//preguntar
+	iPoint prueba = ScreenToWorld(app->render->camera.x, app->render->camera.y);
+	SDL_Rect cameraa = {prueba.x,prueba.y,app->render->camera.w,app->render->camera.h };
+	SDL_Rect r = { renderObj.renderRect.x,renderObj.renderRect.y,renderObj.renderRect.w ,renderObj.renderRect.h };
 
-	SDL_Rect camera = {-app->render->camera.x,-app->render->camera.y,app->render->camera.w,app->render->camera.h };
-	SDL_Rect r = { renderObj.renderRect.x ,renderObj.renderRect.y,renderObj.renderRect.w ,renderObj.renderRect.h };
-
-	return SDL_HasIntersection(&camera, &r);
+	return SDL_HasIntersection(&cameraa, &r);
 }
 
 void Render::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorofobjectstosort)

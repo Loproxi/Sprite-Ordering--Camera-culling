@@ -17,7 +17,7 @@ struct renderObject
 
 	SDL_Rect section = { 0,0,0,0 };
 
-	SDL_Rect renderRect;
+	SDL_Rect renderRect = { 0,0 };
 
 	SDL_RendererFlip flip;
 
@@ -83,6 +83,8 @@ public:
 
 	//Draw Function
 	void Draw();
+
+	iPoint ScreenToWorld(int x, int y) const;
 
 public:
 
