@@ -37,6 +37,8 @@ bool Scene::Start()
 
 	backgroundmap = app->tex->Load("Assets/textures/maptest.png");
 
+	column = app->tex->Load("Assets/textures/column.png");
+
 	froggy = new Player();
 
 	froggy->Start();
@@ -107,6 +109,14 @@ bool Scene::PostUpdate()
 		ret = false;
 
 	froggy->PostUpdate();
+
+	for (int i = 1; i < 5; i++)
+	{
+		for (int j = 1; j < 5; j++)
+		{
+			app->render->AddrenderObject(column, { 100 * j,100 * i }, { 0,0,0,0 }, 2, 0.5f, 0.0f);
+		}
+	}
 
 	/*app->render->DrawTexture(backgroundmap, 0, 0);*/
 	app->render->AddrenderObject(backgroundmap, { 0,0 }, { 0,0,0,0 }, 1, 1.0f,0.0f);

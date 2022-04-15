@@ -68,6 +68,7 @@ bool Render::Start()
 bool Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
+	cont = 0;
 	return true;
 }
 
@@ -81,12 +82,18 @@ bool Render::PostUpdate()
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 
 	//Sort
+	for (int j = 0; j < 3; j++)
+	{
+		SortingRenderObjectsWithOrdenInLayer(layers[j]);
+	}
+	
 
 	Draw();
 
 
 	SDL_RenderPresent(renderer);
 
+	printf_s("Sprites Rendered: %d \n", cont);
 	//Clear layers
 
 	for (int i = 0; i < MAX_LAYERS; i++)
@@ -271,6 +278,17 @@ iPoint Render::ScreenToWorld(int x, int y) const
 	iPoint ret;
 	int scale = app->win->GetScale();
 
+	ret.x = (x + app->render->camera.x / scale);
+	ret.y = (y + app->render->camera.y / scale);
+
+	return ret;
+}
+
+iPoint Render::WorldToScreen(int x, int y) const
+{
+	iPoint ret;
+	int scale = app->win->GetScale();
+
 	ret.x = (x - app->render->camera.x / scale);
 	ret.y = (y - app->render->camera.y / scale);
 
@@ -330,6 +348,7 @@ void Render::Draw()
 				{
 					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
+				cont++;
 			}
 			else
 			{
@@ -337,6 +356,7 @@ void Render::Draw()
 				{
 					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
+				cont++;
 			}
 		}
 	}
@@ -351,6 +371,7 @@ void Render::Draw()
 				{
 					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
+				cont++;
 			}
 			else
 			{
@@ -358,6 +379,7 @@ void Render::Draw()
 				{
 					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
+				cont++;
 			}
 		}
 	}
@@ -372,6 +394,7 @@ void Render::Draw()
 				{
 					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
+				cont++;
 			}
 			else
 			{
@@ -379,6 +402,7 @@ void Render::Draw()
 				{
 					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 				}
+				cont++;
 			}
 		}
 	}
@@ -388,9 +412,9 @@ void Render::Draw()
 bool Render::IsinCamera(const renderObject& renderObj)
 {
 	//preguntar
-	iPoint prueba = ScreenToWorld(app->render->camera.x, app->render->camera.y);
-	SDL_Rect cameraa = {prueba.x,prueba.y,app->render->camera.w,app->render->camera.h };
-	SDL_Rect r = { renderObj.renderRect.x,renderObj.renderRect.y,renderObj.renderRect.w ,renderObj.renderRect.h };
+	iPoint renderRectinWorldCoords = ScreenToWorld(renderObj.renderRect.x, renderObj.renderRect.y);
+	SDL_Rect cameraa = { app->render->camera.x, app->render->camera.y,app->render->camera.w,app->render->camera.h };
+	SDL_Rect r = { renderRectinWorldCoords.x,renderRectinWorldCoords.y,renderObj.renderRect.w ,renderObj.renderRect.h };
 
 	return SDL_HasIntersection(&cameraa, &r);
 }
@@ -406,7 +430,7 @@ void Render::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorof
 		small = i;
 		for (int j = i + 1; j < length; j++)
 		{
-			if (vectorofobjectstosort[j].Ordeninlayer < vectorofobjectstosort[small].Ordeninlayer)
+			if ((vectorofobjectstosort[j].renderRect.y + vectorofobjectstosort[j].renderRect.h)< (vectorofobjectstosort[small].renderRect.y + vectorofobjectstosort[small].renderRect.h))
 			{
 				small = j;
 			}

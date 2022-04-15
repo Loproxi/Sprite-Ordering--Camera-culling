@@ -86,6 +86,8 @@ public:
 
 	iPoint ScreenToWorld(int x, int y) const;
 
+	iPoint WorldToScreen(int x, int y) const;
+
 public:
 
 	SDL_Renderer* renderer;
@@ -96,6 +98,8 @@ public:
 private:
 
 	vector< vector<renderObject>> layers;
+
+	int cont = 0;
 
 };
 

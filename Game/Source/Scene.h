@@ -44,6 +44,8 @@ private:
 
 	SDL_Texture* backgroundmap;
 
+	SDL_Texture* column;
+
 	Player* froggy;
 };
 
