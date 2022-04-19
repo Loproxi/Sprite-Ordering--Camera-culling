@@ -1,4 +1,3 @@
-## Sprite Ordering And Camera Culling:
 
 ### A research project about sprite sorting and camera culling
 ***
