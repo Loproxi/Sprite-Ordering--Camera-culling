@@ -332,39 +332,42 @@ void Render::AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section,
 	{
 		renderobject.flip = SDL_FLIP_HORIZONTAL;
 	}
-
-	layers[layer].push_back(renderobject);
+	if (IsinCamera(renderobject))
+	{
+		layers[layer].push_back(renderobject);
+	}
 }
 
 void Render::Draw()
 {
 	for each (auto renderObj in layers[0])
 	{
-		if (IsinCamera(renderObj))
+		
+		renderObj.toSort = true;
+
+		if (renderObj.section.w == 0 || renderObj.section.h == 0)
 		{
-			if (renderObj.section.w == 0 || renderObj.section.h == 0)
+			if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
 			{
-				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
-				{
-					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
-				}
-				cont++;
+				printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
 			}
-			else
-			{
-				if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
-				{
-					printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
-				}
-				cont++;
-			}
+			cont++;
 		}
+		else
+		{
+			if (SDL_RenderCopyEx(renderer, renderObj.texture, &renderObj.section, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
+			{
+				printf_s("Error in Draw Function. SDL_RenderCopy error: %s", SDL_GetError());
+			}
+			cont++;
+		}
+			
 	}
 
 	for each (auto renderObj in layers[1])
 	{
-		if (IsinCamera(renderObj))
-		{
+		
+			renderObj.toSort = true;
 			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
 				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
@@ -381,13 +384,13 @@ void Render::Draw()
 				}
 				cont++;
 			}
-		}
+		
 	}
 
 	for each (auto renderObj in layers[2])
 	{
-		if (IsinCamera(renderObj))
-		{
+		
+			renderObj.toSort = true;
 			if (renderObj.section.w == 0 || renderObj.section.h == 0)
 			{
 				if (SDL_RenderCopyEx(renderer, renderObj.texture, nullptr, &renderObj.renderRect, renderObj.angle, NULL, renderObj.flip) != 0)
@@ -404,7 +407,7 @@ void Render::Draw()
 				}
 				cont++;
 			}
-		}
+		
 	}
 
 }
@@ -430,10 +433,12 @@ void Render::SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorof
 		small = i;
 		for (int j = i + 1; j < length; j++)
 		{
-			if ((vectorofobjectstosort[j].renderRect.y + vectorofobjectstosort[j].renderRect.h)< (vectorofobjectstosort[small].renderRect.y + vectorofobjectstosort[small].renderRect.h))
+			
+			if ((vectorofobjectstosort[j].renderRect.y + vectorofobjectstosort[j].renderRect.h) < (vectorofobjectstosort[small].renderRect.y + vectorofobjectstosort[small].renderRect.h))
 			{
 				small = j;
 			}
+			
 		}
 		swap(vectorofobjectstosort[i], vectorofobjectstosort[small]);
 

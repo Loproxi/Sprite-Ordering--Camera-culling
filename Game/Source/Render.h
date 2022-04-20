@@ -29,7 +29,7 @@ struct renderObject
 
 	float speed = 1.0f;
 
-	bool toSort = false;
+	bool toSort = true;
 
 };
 
