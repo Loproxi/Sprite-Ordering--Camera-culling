@@ -36,6 +36,10 @@ Furthermore, it is a must for games with huge maps with so many render objects.
 
 First, I added a struct of a renderObject with a bunch of variables, and a vector of vectors of renderObjects called layers:
 
+![RenderObject](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/StructRenderObject.png)
+![VectorLayers](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/Vectorlayers.png)
+
+And  a function that is called “AddRenderObject”:
 
 - Bulleted
 - List
