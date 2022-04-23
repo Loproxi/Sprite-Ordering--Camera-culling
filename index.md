@@ -37,9 +37,28 @@ Furthermore, it is a must for games with huge maps with so many render objects.
 First, I added a struct of a renderObject with a bunch of variables, and a vector of vectors of renderObjects called layers:
 
 ![RenderObject](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/StructRenderObject.png)
+
 ![VectorLayers](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/Vectorlayers.png)
 
 And  a function that is called “AddRenderObject”:
+
+![AddRenderObject](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/AddRenderObject.png)
+
+The main objective of this function is to gather all the necessary variables into a renderObject variable, and once this is done, if this renderobject is in camera we add it to the renderObjects vector.
+
+Second, In order to get the camera culling, we will need a function that tells us if an object is in camera:
+
+![IsInCamera](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/IsInCamera.png)
+
+Be careful because the RenderObject variable called renderRect is in camera coordinates and the camera position is in world coordinates. We will need both positions in the same basis,  so in this function we pass renderRect coords into world coordinates and then with the SDL_HasIntersection() function it will determine if both rects are colliding. 
+If SDL_HasIntersection() returns true, the renderObj will be drawn.
+
+To render, we will use the draw function:
+
+
+
+
+
 
 - Bulleted
 - List
