@@ -16,6 +16,7 @@ Street Fighter 2:
 As you can see, it follows the order of background sprite, ground sprite, players sprites and SpecialAttacks sprite.
 
 The Binding of Isaac:
+![TheBindingOfIsaac](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/Isaac-Captures.png)
 
 ### Header 3
 
