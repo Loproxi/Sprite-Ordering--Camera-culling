@@ -46,7 +46,7 @@ First, I added a struct of a renderObject with a bunch of variables, and a vecto
 
 ***
 
-And  a function that is called “AddRenderObject”:
+And  a function called “AddRenderObject”:
 
 ![AddRenderObject](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/AddRenderObject.png)
 
@@ -54,11 +54,12 @@ The main objective of this function is to gather all the necessary variables int
 
 ***
 
-Second, In order to get the camera culling, we will need a function that tells us if an object is in camera:
+Second, The camera culling, we will need a function that tells us if an object is in camera:
 
 ![IsInCamera](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/IsInCamera.png)
 
-Be careful because the RenderObject variable called renderRect is in camera coordinates and the camera position is in world coordinates. We will need both positions in the same basis,  so in this function we pass renderRect coords into world coordinates and then with the SDL_HasIntersection() function it will determine if both rects are colliding. 
+Be careful because the RenderObject variable called renderRect is in camera coordinates and the camera position is in world coordinates. We will need both positions in the same basis,  so in this function we pass renderRect coords into world coordinates and then with the SDL_HasIntersection() function it will determine if both rects are colliding.
+
 If SDL_HasIntersection() returns true, the renderObj will be drawn.
 
 ***
@@ -83,12 +84,12 @@ Depending on which condition the user decides to use on the sorting function.
 
 ![RenderPostUpdate](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/RenderPostUpdate.png)
 
-And last but not least, we use all this functions on the PostUpdate of the render in this order
+And last but not least, we will use all this functions on the PostUpdate of the render in this order
 Sort, Draw and then we clear all the layers. 
 
 ***
 
-## Links To Documentation:
+## Links to documentation that helped me on the development of the project:
 
 [Ordering By Position](https://eliasdaler.wordpress.com/2013/11/20/z-order-in-top-down-2d-games/)
 
