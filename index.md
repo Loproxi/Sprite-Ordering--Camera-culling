@@ -17,7 +17,7 @@ As you can see, it follows the order of background sprite, ground sprite, player
 
 ### The Binding of Isaac:
 
-![TheBindingOfIsaac](https://github.com/Loproxi/Sprite-Ordering--Camera-culling/blob/gh-pages/Isaac-Captures.png)
+![TheBindingOfIsaac](https://image.noelshack.com/fichiers-sm/2015/26/1435235106-647-noelshack-capture-d-ecran.gif)
 
 ### Header 3
 
