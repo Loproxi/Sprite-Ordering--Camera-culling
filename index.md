@@ -7,6 +7,9 @@
 
 I am Pol Rius, student of the Degree in Video Games by UPC at CITM. This content is generated for the Research project.
 
+Check my research project on:
+https://github.com/Loproxi/Sprite-Ordering--Camera-culling
+
 ***
 
 ## Sprite Sorting
