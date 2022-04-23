@@ -6,6 +6,7 @@
 ## Introduction
 
 I am Pol Rius, student of the Degree in Video Games by UPC at CITM. This content is generated for the Research project.
+
 ***
 
 ## Sprite Sorting
