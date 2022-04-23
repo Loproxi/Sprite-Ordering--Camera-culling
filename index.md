@@ -5,6 +5,11 @@
 
 ## Introduction
 
+I am Pol Rius, student of the Degree in Video Games by UPC at CITM. This content is generated for the Research project.
+***
+
+## Sprite Sorting
+
 At some point in game development, it appears a big problem when it comes to render sprites, sprite overlapping and, in order to fix that we will have to sort the sprites dynamically.
 Sorting sprites will provide the player the illusion of depth, even if it’s a 2D game.
 
@@ -20,9 +25,17 @@ As you can see, it follows the order of background sprite, ground sprite, player
 ![TheBindingOfIsaac](https://image.noelshack.com/fichiers-sm/2015/26/1435235106-647-noelshack-capture-d-ecran.gif)
 
 Another example would be The binding of isaac, but in this example it takes into account the position of the entity in the Y-axis. And depending on which entity is in front or behind of the other, the one that is ahead will overlap the other. 
+***
 
+## Camera Culling
 
-### Header 3
+It is a method that empower the program to only render the entities that are on the camera viewport. It is useful because it can improve both GPU and the CPU performances. 
+Furthermore, it is a must for games with huge maps with so many render objects.
+
+## My Research Project
+
+First, I added a struct of a renderObject with a bunch of variables, and a vector of vectors of renderObjects called layers:
+
 
 - Bulleted
 - List
