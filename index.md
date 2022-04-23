@@ -11,7 +11,7 @@ I am Pol Rius, student of the Degree in Video Games by UPC at CITM. This content
 
 ## Sprite Sorting
 
-At some point in game development, it appears a big problem when it comes to render sprites, sprite overlapping and, in order to fix that we will have to sort the sprites dynamically.
+At some point in game development, it appears a big problem when it comes to render sprites, **sprite overlapping** and, in order to fix that we will have to sort the sprites dynamically.
 Sorting sprites will provide the player the illusion of depth, even if it’s a 2D game.
 
 A few games that follow a sprite rendering order are:
@@ -41,11 +41,15 @@ First, I added a struct of a renderObject with a bunch of variables, and a vecto
 
 ![VectorLayers](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/Vectorlayers.png)
 
+***
+
 And  a function that is called “AddRenderObject”:
 
 ![AddRenderObject](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/AddRenderObject.png)
 
 The main objective of this function is to gather all the necessary variables into a renderObject variable, and once this is done, if this renderobject is in camera we add it to the renderObjects vector.
+
+***
 
 Second, In order to get the camera culling, we will need a function that tells us if an object is in camera:
 
@@ -54,12 +58,16 @@ Second, In order to get the camera culling, we will need a function that tells u
 Be careful because the RenderObject variable called renderRect is in camera coordinates and the camera position is in world coordinates. We will need both positions in the same basis,  so in this function we pass renderRect coords into world coordinates and then with the SDL_HasIntersection() function it will determine if both rects are colliding. 
 If SDL_HasIntersection() returns true, the renderObj will be drawn.
 
+***
+
 To render, we will use the draw function:
 
 ![Draw](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/Draw.png)
 
 The for each will do a loop everytime there is a renderObj in the vector of renderObj called layers. And we will do this for each layer. Ex: layers[0], layers[1].
- 
+
+***
+
 To sort the renderObjects we will use the SortingRenderObjectswithPosition:
 
 ![SortingRenderObjects](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/SortingRenderObject.png)
@@ -68,19 +76,10 @@ We are using the sorting algorithm called selection sort.
 In this case, the user would be able to choose between sorting layers by position or by the order in layer. 
 Depending on which condition the user decides to use on the sorting function.
 
+***
+
 ![RenderPostUpdate](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/RenderPostUpdate.png)
 
 And last but not least, we use all this functions on the PostUpdate of the render in this order
 Sort, Draw and then we clear all the layers. 
 
-
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
