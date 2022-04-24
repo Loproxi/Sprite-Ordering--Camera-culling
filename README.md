@@ -77,6 +77,7 @@ To sort the renderObjects we will use the SortingRenderObjectswithPosition:
 ![SortingRenderObjects](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/SortingRenderObject.png)
 
 We are using the sorting algorithm called selection sort.
+
 In this case, the user would be able to choose between sorting layers by position or by the order in layer. 
 Depending on which condition the user decides to use on the sorting function.
 
