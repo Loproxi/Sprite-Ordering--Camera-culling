@@ -29,8 +29,6 @@ struct renderObject
 
 	float speed = 1.0f;
 
-	bool toSort = true;
-
 };
 
 class Render : public Module
@@ -75,11 +73,11 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 	//Research Project
-	void SortingRenderObjectsWithOrdenInLayer(vector<renderObject>& vectorofobjectstosort);
+	void SortingRenderObjectsWithPosition(vector<renderObject>& vectorofobjectstosort);
 
-	bool IsinCamera(const renderObject& renderObj);
+	bool IsinCamera(const renderObject* renderObj);
 
-	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH = false, bool tosort = false, float scale = 1.0f, float speed = 1.0f);
+	void AddrenderObject(SDL_Texture* texture, iPoint pos, SDL_Rect section, int layer, float ordeninlayer, double angle, bool isFlipH = false, float scale = 1.0f, float speed = 1.0f);
 
 	//Draw Function
 	void Draw();
