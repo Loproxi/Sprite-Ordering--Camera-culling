@@ -85,8 +85,11 @@ Depending on which condition the user decides to use on the sorting function.
 
 ![RenderPostUpdate](https://raw.githubusercontent.com/Loproxi/Sprite-Ordering--Camera-culling/gh-pages/RenderPostUpdate.png)
 
-And last but not least, we will use all this functions on the PostUpdate of the render in this order
-Sort, Draw and then we clear all the layers. 
+And last but not least, we will use all this functions on the PostUpdate of the render in this order:
+
+1)Sort
+2)Draw 
+3)Clear all the layers. 
 
 ***
 
