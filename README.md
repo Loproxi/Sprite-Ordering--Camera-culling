@@ -88,7 +88,9 @@ Depending on which condition the user decides to use on the sorting function.
 And last but not least, we will use all this functions on the PostUpdate of the render in this order:
 
 1)Sort
+
 2)Draw 
+
 3)Clear all the layers. 
 
 ***
