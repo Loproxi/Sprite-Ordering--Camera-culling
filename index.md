@@ -28,7 +28,8 @@ As you can see, it follows the order of background sprite, ground sprite, player
 
 ![TheBindingOfIsaac](https://image.noelshack.com/fichiers-sm/2015/26/1435235106-647-noelshack-capture-d-ecran.gif)
 
-Another example would be The binding of isaac, but in this example it takes into account the position of the entity in the Y-axis. And depending on which entity is in front or behind of the other, the one that is ahead will overlap the other. 
+Another example would be The binding of isaac, but in this example it takes into account the position of the entity in the Y-axis. And depending on which entity is in front or behind of the other, the one that is ahead will overlap the other.
+
 ***
 
 ## Camera Culling
